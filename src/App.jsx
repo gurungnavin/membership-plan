@@ -470,7 +470,7 @@ export default function PricingPlans() {
         <div className='max-w-[900px] max-h-[610px]'>
           {/* Total Price */}
           <Typography variant="h5" className="">
-            合計金額: {hasSelectedOptions? total : 0}円 (税別)
+            合計金額: {total > 0 ? total.toLocaleString() : 0 }円 (税別)
           </Typography>
 
           {/* Additional Information */}
@@ -481,6 +481,7 @@ export default function PricingPlans() {
 
           {/* Trial Button */}
           <Button
+            onClick={() => window.location.href = "https://my.mayai.jp/signup?_gl=1%2ago0o5d%2a_gcl_aw%2aR0NMLjE3NDE2ODMyOTguQ2owS0NRandtN3EtQmhEUkFSSXNBQ0Q2LWZYNDBEaFhJTGJ6OXlCbTZWb1otd05HMjlCNGxuN2VPRWtZQ2hkbUpsRl9IM0tUN0ZldlhTWWFBaml5RUFMd193Y0I.%2a_gcl_au%2aMzk4NTAyNTk4LjE3Mzc5NjUwNDA.&_ga=2.30745399.946743939.1741581702-1040683374.1737965041&_gac=1.195903070.1741683298.Cj0KCQjwm7q-BhDRARIsACD6-fX40DhXILbz9yBm6VoZ-wNG29B4ln7eOEkYChdmJlF_H3KT7FevXSYaAjiyEALw_wcB"}
             variant="contained"
             fullWidth
             className="mt-4"
