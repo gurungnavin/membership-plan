@@ -447,7 +447,7 @@ export default function PricingPlans() {
 
       <div className="max-w-[900px] max-h-[610px] mx-auto my-8 p-12 space-y-4 flex flex-col border-2 border-[#E761A4] rounded-xl text-center">
         {/* Conditionally display duration selector only when options are selected */}
-        {hasSelectedOptions && (
+        {(hasSelectedOptions || membershipPlans > 0)? (
           <div className="mt-4">
             <Typography gutterBottom>契約期間 ({duration}ヶ月)</Typography>
             <Slider
@@ -465,12 +465,12 @@ export default function PricingPlans() {
               ]}
             />
           </div>
-        )}
+        ) : " "}
 
         <div className='max-w-[900px] max-h-[610px]'>
           {/* Total Price */}
           <Typography variant="h5" className="">
-            合計金額: {total > 0 ? total.toLocaleString() : 0 }円 (税別)
+            合計金額: {total > 0 ? total.toLocaleString() : membershipPlans || calculateTotal() }円 (税別)
           </Typography>
 
           {/* Additional Information */}
