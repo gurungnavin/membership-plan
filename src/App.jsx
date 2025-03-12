@@ -189,13 +189,6 @@ export default function PricingPlans() {
   // console.log(test);
  
 
-  const calculateDiscount = () => {
-    const discountPercentage = getDiscountPercentage(duration);
-    return discountPercentage;
-  };
-
-
-
   // Options section
 
   const [selectedOptions, setSelectedOptions] = useState({
@@ -219,20 +212,17 @@ export default function PricingPlans() {
     }
   };
 
+  // console.log(selectedValue)
   const calculateTotal = () => {
     let total = 0;
     if (selectedOptions.callback) total += 300;
     if (selectedOptions.sms) total += 300;
     if (selectedOptions.numberChange) {
-      total += {
-        hoshi: 300,
-        ame: 2000,
-        unicorn: 8000,
-      }[numberTier];
+      total += selectedValue
     }
     return total
   };
-
+  
   const total = (calculateTotal() + membershipPlans) * duration
   const hasSelectedOptions = Object.values(selectedOptions).some(Boolean);
 
@@ -445,7 +435,7 @@ export default function PricingPlans() {
 
 
 
-      <div className="max-w-[900px] max-h-[610px] mx-auto my-8 p-12 space-y-4 flex flex-col border-2 border-[#E761A4] rounded-xl text-center">
+      <div className="max-w-[950px] max-h-[610px] mx-auto my-1 p-12 space-y-3 flex flex-col border-2 border-[#E761A4] rounded-xl text-center">
         {/* Conditionally display duration selector only when options are selected */}
         {(hasSelectedOptions || membershipPlans > 0)? (
           <div className="mt-4">
@@ -474,7 +464,8 @@ export default function PricingPlans() {
           </Typography>
 
           {/* Additional Information */}
-          <Typography variant="body2" sx={{ maxWidth: '750px', marginBlock: '10px' }}>
+          {/* className='bg-[#ffb1d8] font-extrabold text-xl px-8 py-3 rounded-2xl' */}
+          <Typography variant="body2" sx={{background: '#ffb1d8', fontWeight: 'semi-bold', padding: '8px', maxWidth: '700px', borderRadius: '10px', marginBlock: '8px', marginInline: '22px' }}>
             スタンダードプラン、ビジネスプランは月額基本料金に含まれる月間の受電数を超えると、
             従量料金として1件あたり50円（税別）が上乗せとなります。
           </Typography>
