@@ -183,7 +183,7 @@ const PlanCard = ({ plan, isActive, onSelect }) => {
 
 export default function PricingPlans() {
   const [selectedPlan, setSelectedPlan] = useState(1); // Default to Free Plan (ID 1)
-  const [duration, setDuration] = useState('2month'); // Default to '2months'
+  const [duration, setDuration] = useState(1); // Default to '2months'
   
   let membershipPlans = plans[selectedPlan-1].priceValue
   // console.log(test);
