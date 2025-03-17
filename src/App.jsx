@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import {
   Paper,
   Typography,
@@ -10,8 +12,6 @@ import {
   Card,
   CardContent,
   Slider,
-  Select,
-  MenuItem,
   List,
   ListItem,
   ListItemText,
@@ -23,171 +23,172 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import DialpadIcon from '@mui/icons-material/Dialpad';
 import { keyframes } from '@emotion/react';
 
-const plans = [
-  {
-    id: 1,
-    name: '無料プラン',
-    color: '#342D27',
-    price: 0,
-    priceValue : 0,
-    popular: true,
-    features: {
-      '受電数': '20件 ',
-      '従量料金': '0円',
-      '対応時間': '24時間',
-      '対応ステータス管理': '〇',
-      '応答内容の変更': 'ー',
-      '迷惑電話を登録': 'ー',
-    }
-  },
-  {
-    id: 2,
-    name: 'スタンダード',
-    color: '#E761A4',
-    price: "1,500/月",
-    priceValue : 1500,
-    popular: true,
-    features: {
-      '受電数': '50件 ',
-      '従量料金': '50円',
-      '対応時間': '24時間',
-      '対応ステータス管理': '〇',
-      '応答内容の変更': 'ー',
-      '迷惑電話を登録': 'ー',
-    }
-  },
-  {
-    id: 3,
-    name: 'ビジネス',
-    color: '#ffb300',
-    price: "9,800/月",
-    priceValue : 9800,
-    features: {
-      '受電数': '150件 ',
-      '従量料金': '50円',
-      '対応時間': '24時間',
-      '対応ステータス管理': '〇',
-      '応答内容の変更': '〇',
-      '迷惑電話を登録': '〇',
-    }
-  }
-];
+import { BrowserRouter as Router, Routes, Route, Link, BrowserRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Simulator from './Simulator';
 
-const durationAnimation = keyframes`
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-`;
-
-// card hover or selected of free, standard and business
-const DurationButton = styled(Button)(({ theme, selected, color }) => ({
-  border: `1px solid ${color}`,
-  margin: theme.spacing(0.5),
-  ...(selected && {
-    backgroundColor: color,
-    color: theme.palette.getContrastText(color),
-    '&:hover': {
-      backgroundColor: color,
-    }
-  })
-}));
-
-const PlanCard = ({ plan, isActive, onSelect }) => {
+const App = () => {
   return (
-    <Paper
-      elevation={isActive ? 3 : 1}
-      sx={{
-        p: 3,
-        m: 1,
-        background: isActive ? plan.color : 'transparent',
-        color: isActive ? 'white' : "#342D27",
-        position: 'relative',
-        minWidth: 280,
-        minHeight: 450, // Ensure equal height for all cards
-        transition: 'transform 0.4s',
-        transform: isActive ? 'scale(1.03)' : 'scale(1)',
-      }}
-    >
-      {plan.popular && (
-        <Chip
-          label="人気プラン"
-          sx={{
-            position: 'absolute',
-            top: -16,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            bgcolor: isActive ? 'white' : plan.color,
-            color: isActive ? plan.color : 'white',
-            border: isActive ? `1px solid ${plan.color}` : '',
-          }}
-        />
-      )}
-
-      {plan.price === 0 && (
-        <Chip
-          label="2週間無料で使ってみる"
-          sx={{
-            position: 'absolute',
-            top: -16,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            bgcolor: isActive ? 'white' : plan.color,
-            color: isActive ? plan.color : 'white',
-            border: isActive ? `1px solid ${plan.color}` : '',
-          }}
-        />
-      )}
-
-
-
-      <Box sx={{ textAlign: 'center', mb: 2 }}>
-        <Typography variant="h5" sx={{ color: isActive ? 'white' : plan.color }}>
-          {plan.name}
-        </Typography>
-        <Typography variant="h4" sx={{ fontWeight: 'bold', my: 2 }}>
-          ¥{plan.price.toLocaleString()}
-        </Typography>
-      </Box>
-
-      <Box sx={{ mb: 2 }}>
-        {Object.entries(plan.features).map(([key, value]) => (
-          <Box key={key} sx={{ display: 'flex', justifyContent: 'space-between', py: 1, }}>
-            <Typography variant="body2">{key}</Typography>
-            <Typography variant="body2" sx={{ fontWeight: 'bold', color: isActive ? 'white' : 'black' }}>
-              {value}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
-
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{
-          color: isActive ? plan.color : 'white',
-          bgcolor: isActive ? 'white' : plan.color,
-          fontWeight: 'bold'
-        }}
-        onClick={() => onSelect(plan.id)}
-      >
-        今すぐ始める
-      </Button>
-    </Paper>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/simulator" element={<Simulator />} />
+      </Routes>
+    </BrowserRouter>
   );
-};
+}
 
-export default function PricingPlans() {
+
+
+const Home = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+    useEffect(() => {
+      window.scrollTo(0, 0); // Scrolls to the top of the page
+    }, [location]);
+
+  const plans = [
+    {
+      id: 1,
+      name: '無料プラン',
+      color: '#342D27',
+      price: 0,
+      priceValue: 0,
+      popular: true,
+      features: {
+        '受電数': '20件 ',
+        '従量料金': '0円',
+        '対応時間': '24時間',
+        '対応ステータス管理': '〇',
+        '応答内容の変更': 'ー',
+        '迷惑電話を登録': 'ー',
+      }
+    },
+    {
+      id: 2,
+      name: 'スタンダード',
+      color: '#E761A4',
+      price: "1,500/月",
+      priceValue: 1500,
+      popular: true,
+      features: {
+        '受電数': '50件 ',
+        '従量料金': '50円',
+        '対応時間': '24時間',
+        '対応ステータス管理': '〇',
+        '応答内容の変更': 'ー',
+        '迷惑電話を登録': 'ー',
+      }
+    },
+    {
+      id: 3,
+      name: 'ビジネス',
+      color: '#ffb300',
+      price: "9,800/月",
+      priceValue: 9800,
+      features: {
+        '受電数': '150件 ',
+        '従量料金': '50円',
+        '対応時間': '24時間',
+        '対応ステータス管理': '〇',
+        '応答内容の変更': '〇',
+        '迷惑電話を登録': '〇',
+      }
+    }
+  ];
+
+
+  // card hover or selected of free, standard and business
+  const DurationButton = styled(Button)(({ theme, selected, color }) => ({
+    border: `1px solid ${color}`,
+    margin: theme.spacing(0.5),
+    ...(selected && {
+      backgroundColor: color,
+      color: theme.palette.getContrastText(color),
+      '&:hover': {
+        backgroundColor: color,
+      }
+    })
+  }));
+
+  const PlanCard = ({ plan, isActive, onSelect }) => {
+    return (
+      <Paper
+        sx={{
+          p: 3,
+          m: 1,
+          background:'transparent',
+          border: '2px solid #E761A4',
+          borderRadius: '20px',
+          color: "#342D27",
+          position: 'relative',
+          minWidth: 280,
+          minHeight: 350, // Ensure equal height for all cards
+          transition: 'transform 0.4s',
+        }}
+      >
+        {plan.popular && (
+          <Chip
+            label="人気プラン"
+            sx={{
+              position: 'absolute',
+              top: -16,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              bgcolor: isActive ? 'white' : plan.color,
+              color: isActive ? plan.color : 'white',
+              border: isActive ? `1px solid ${plan.color}` : '',
+            }}
+          />
+        )}
+
+        {plan.price === 0 && (
+          <Chip
+            label="2週間無料で使ってみる"
+            sx={{
+              position: 'absolute',
+              top: -16,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              bgcolor: 'white',
+              color: 'black',
+              border: '1px solid #E761A4',
+            }}
+          />
+        )}
+
+
+
+        <Box sx={{ textAlign: 'center', mb: 2 }}>
+          <Typography variant="h5" sx={{ color: isActive ? 'white' : plan.color }}>
+            {plan.name}
+          </Typography>
+          <Typography variant="h4" sx={{ fontWeight: 'bold', my: 2 }}>
+            ¥{plan.price.toLocaleString()}
+          </Typography>
+        </Box>
+
+        <Box sx={{ mb: 2 }}>
+          {Object.entries(plan.features).map(([key, value]) => (
+            <Box key={key} sx={{ display: 'flex', justifyContent: 'space-between', py: 1, }}>
+              <Typography variant="body2">{key}</Typography>
+              <Typography variant="body2" sx={{ fontWeight: 'bold', color:'black' }}>
+                {value}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </Paper>
+    );
+  };
+
   const [selectedPlan, setSelectedPlan] = useState(1); // Default to Free Plan (ID 1)
   const [duration, setDuration] = useState(1); // Default to '2months'
-  
-  let membershipPlans = plans[selectedPlan-1].priceValue
+
+  let membershipPlans = plans[selectedPlan - 1].priceValue
   // console.log(test);
- 
+
 
   // Options section
 
@@ -199,9 +200,9 @@ export default function PricingPlans() {
   const [numberTier, setNumberTier] = useState('hoshi');
   const [selectedValue, setSelectedValue] = useState(null);
   const options = [
-    { label: 'ほし番号: 300円/月', value: 300 },
-    { label: 'あめ番号: 2,000円/月', value: 2000 },
-    { label: 'ゆにこーん番号：8000円/月', value: 8000 },
+    { label: '▸ほし番号: 300円/月', value: 300 },
+    { label: '▸あめ番号: 2,000円/月', value: 2000 },
+    { label: '▸ゆにこーん番号：8000円/月', value: 8000 },
   ];
 
   const handleSelect = (value) => {
@@ -222,13 +223,9 @@ export default function PricingPlans() {
     }
     return total
   };
-  
+
   const total = (calculateTotal() + membershipPlans) * duration
   const hasSelectedOptions = Object.values(selectedOptions).some(Boolean);
-
-  
-
-
   return (
     <div className='flex flex-col items-center overflow-x-hidden'>
       <Box sx={{ maxWidth: 1060, mx: 'auto', my: 2, py: 4, background: "white", display: 'flex', flexDirection: 'column', justifyContent: 'center', overflowX: 'hidden' }}>
@@ -280,8 +277,7 @@ export default function PricingPlans() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {/* Card 1 - Callback */}
           <Card
-            className={`flex-1 cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 ${selectedOptions.callback ? 'border-2 border-[#E761A4]' : ''}`}
-            onClick={() => setSelectedOptions(prev => ({ ...prev, callback: !prev.callback }))}
+            className='flex-1 cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 border-2 border-[#E761A4]'
           >
             {/* Crystal Border Animation */}
             <div className="absolute inset-0 pointer-events-none rounded-2xl border-2 border-transparent">
@@ -337,8 +333,7 @@ export default function PricingPlans() {
 
           {/* Card 2 - SMS */}
           <Card
-            className={`flex-1 cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 ${selectedOptions.sms ? 'border-2 border-[#E761A4]' : ''}`}
-            onClick={() => setSelectedOptions(prev => ({ ...prev, sms: !prev.sms }))}
+            className='flex-1 cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 border-2 border-[#E761A4]'
           >
             {/* Crystal Border Animation */}
             <div className="absolute inset-0 pointer-events-none rounded-2xl border-2 border-transparent">
@@ -386,8 +381,7 @@ export default function PricingPlans() {
 
           {/* Card 3 - numberChange */}
           <Card
-            className={`flex-1 cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 ${selectedOptions.numberChange || selectedValue > 0 ? 'border-2 border-[#E761A4]' : ''}`}
-            onClick={() => setSelectedOptions(prev => ({ ...prev, numberChange: !prev.numberChange }))}
+            className='flex-1 cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 border-2 border-[#E761A4]'
           >
             {/* Crystal Border Animation */}
             <div className="absolute inset-0 pointer-events-none rounded-2xl border-2 border-transparent">
@@ -405,94 +399,35 @@ export default function PricingPlans() {
               </Typography>
               <List sx={{ textAlign: 'start' }}>
                 {options.map((option) => (
-                  <ListItem
-                    key={option.value}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      border: '1px solid #E761A4',
-                      borderRadius: '5px',
-                      marginBottom: '5px',
-                      transition: '0.3s',
-                    }}
-                  >
-                    <Checkbox
-                      checked={selectedValue === option.value}
-                      onChange={() => handleSelect(option.value)}
-                      sx={{color : '#E761A4'}}
-                    />
-                    <Typography sx={{ color: '#E761A4', fontSize: '12px' }}>
-                      {option.label}
-                    </Typography>
-                  </ListItem>
-                ))}
+                  <ListItemText sx={{
+                    fontSize: '1px',
+                    color: 'white',
+                    cursor: 'pointer',
+                    backgroundColor: '#E761A4',
+                    transition: '0.3s'
+                  }
+                  }
+                  >{option.label}
+                  </ListItemText>                ))}
               </List>
             </CardContent>
           </Card>
         </div>
       </div>
+      <Button
+                
+                variant="contained"
+                sx={{
+                  background: "#E761A4",
+                  marginBottom: "22px",
+                  paddingInline: "80px"
 
-
-
-
-      <div className="max-w-[950px] max-h-[610px] mx-auto my-1 p-12 space-y-3 flex flex-col border-2 border-[#E761A4] rounded-xl text-center">
-        {/* Conditionally display duration selector only when options are selected */}
-        {(hasSelectedOptions || membershipPlans > 0)? (
-          <div className="mt-4">
-            <Typography gutterBottom>契約期間 ({duration}ヶ月)</Typography>
-            <Slider
-              sx={{ color: "#E761A4" }}
-              value={duration}
-              onChange={(_, value) => setDuration(value)}
-              min={1}
-              max={12}
-              step={1}
-              marks={[
-                { value: 1, label: '1ヶ月' },
-                { value: 2, label: '2ヶ月' },
-                { value: 6, label: '6ヶ月' },
-                { value: 12, label: '1年' },
-              ]}
-            />
-          </div>
-        ) : " "}
-
-        <div className='max-w-[900px] max-h-[610px]'>
-          {/* Total Price */}
-          <Typography variant="h5" className="">
-            合計金額: {total > 0 ? total.toLocaleString() : membershipPlans || calculateTotal() }円 (税別)
-          </Typography>
-
-          {/* Additional Information */}
-          {/* className='bg-[#ffb1d8] font-extrabold text-xl px-8 py-3 rounded-2xl' */}
-          <Typography variant="body2" sx={{background: '#ffb1d8', fontWeight: 'semi-bold', padding: '8px', maxWidth: '700px', borderRadius: '10px', marginBlock: '8px', marginInline: '22px' }}>
-            スタンダードプラン、ビジネスプランは月額基本料金に含まれる月間の受電数を超えると、
-            従量料金として1件あたり50円（税別）が上乗せとなります。
-          </Typography>
-
-          {/* Trial Button */}
-          <Button
-            onClick={() => window.location.href = "https://my.mayai.jp/signup?_gl=1%2ago0o5d%2a_gcl_aw%2aR0NMLjE3NDE2ODMyOTguQ2owS0NRandtN3EtQmhEUkFSSXNBQ0Q2LWZYNDBEaFhJTGJ6OXlCbTZWb1otd05HMjlCNGxuN2VPRWtZQ2hkbUpsRl9IM0tUN0ZldlhTWWFBaml5RUFMd193Y0I.%2a_gcl_au%2aMzk4NTAyNTk4LjE3Mzc5NjUwNDA.&_ga=2.30745399.946743939.1741581702-1040683374.1737965041&_gac=1.195903070.1741683298.Cj0KCQjwm7q-BhDRARIsACD6-fX40DhXILbz9yBm6VoZ-wNG29B4ln7eOEkYChdmJlF_H3KT7FevXSYaAjiyEALw_wcB"}
-            variant="contained"
-            fullWidth
-            className="mt-4"
-            sx={{ background: '#E761A4', maxWidth: '300px', marginBlock: '15px' }}
-          >
-            {total > 0 ? '導入' : '2週間無料で使ってみる'}
-          </Button>
-
-          {/* Disclaimer */}
-          <Typography variant="caption" display="block" className="mt-4">
-            ※マヤイが応答する番号が発行されるため、既にお持ちの電話番号で利用する場合は転送設定が必要です。
-          </Typography>
-          <Typography variant="caption" display="block">
-            ※料金は全て税別価格です。
-          </Typography>
-        </div>
-
-      </div>
-
-
+                }}
+                onClick={() => navigate("/simulator")}
+              >
+                シムレイションする
+              </Button>
     </div>
   );
-}
+};
+export default App
