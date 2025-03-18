@@ -425,7 +425,7 @@ const Home = () => {
                 }}
                 onClick={() => navigate("/simulator")}
               >
-                シムレイションする
+                シュミレーションする
               </Button>
     </div>
   );
